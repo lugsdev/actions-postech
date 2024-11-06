@@ -1,24 +1,42 @@
-name: Build and Test
+name: Build .NET Framework
 
 on:
   push:
-    branches:
-      - main
-  pull_request:
+  workflow_dispatch:
 
 jobs:
-  build-and-test:
-    runs-on: ubuntu-latest
+  build:
+    name: Build
+    runs-on: windows-latest
+  
+  steps:
+  
+    - name: Checkout Code
+      uses: actions/checkout@v3
+      with:
+      fetch-depth: 0
 
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v2
+    - name: Setup MSBuild Path
+      uses: microsoft/setup-msbuild@v1.3
+      env:
+        ACTIONS_ALLOW_UNSECURE_COMMANDS: true
 
-      - name: Install Dependencies
-        run: npm install
+    - name: Setup VSTest
+      uses: darenm/Setup-VSTest@v1.2  
 
-      - name: Build
-        run: npm run build
+    - name: Setup Nuget
+      uses: NuGet/setup-nuget@v1.2
+      env:
+        ACTIONS_ALLOW_UNSECURE_COMMANDS: true
 
-      - name: Test
-        run: npm test
+    - name: Restore NuGet Packages
+      run: nuget restore your-solution-name.sln
+
+    - name: Build Release
+      run: msbuild your-solution-name.sln /p:Configuration=Release
+
+    - name: Test
+      run: vstest.console.exe path-to-test-binary.dll
+
+    - name: Run
+      run: path-to-application-binary.exe
