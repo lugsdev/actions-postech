@@ -9,8 +9,8 @@ jobs:
         name: Executando o job de teste
         runs-on: ubuntu-latest
         steps:
-            -name: Checkout code
+            - name: Checkout code
              uses: actions/checkout@v2
              
-             -name: Executando um comando simples
-              run: echo "Primeiro Action feito no Github"
+            - name: Executando um comando simples
+                run: echo "Primeiro Action feito no Github"
