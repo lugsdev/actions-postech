@@ -1,16 +1,13 @@
-name: Primeiro Workflow
-
-on:
-    push:
-        branches: [ main ]
-
+name: learn-github-actions
+run-name: ${{ github.actor }} is learning GitHub Actions
+on: [push]
 jobs:
-    test_job:
-        name: Executando o job de teste
-        runs-on: ubuntu-latest
-        steps:
-            - name: Checkout code
-            uses: actions/checkout@v2
-             
-            - name: Executando um comando simples
-            run: echo "Primeiro Action feito no Github"
+  check-bats-version:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: npm install -g bats
+      - run: bats -v
