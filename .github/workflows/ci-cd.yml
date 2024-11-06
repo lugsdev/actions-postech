@@ -1,42 +1,16 @@
-name: Build .NET Framework
+name: Primeiro Workflow
 
 on:
-  push:
-  workflow_dispatch:
+    push:
+        branches: [ main ]
 
 jobs:
-  build:
-    name: Build
-    runs-on: windows-latest
-  
-  steps:
-  
-    - name: Checkout Code
-      uses: actions/checkout@v3
-      with:
-      fetch-depth: 0
-
-    - name: Setup MSBuild Path
-      uses: microsoft/setup-msbuild@v1.3
-      env:
-        ACTIONS_ALLOW_UNSECURE_COMMANDS: true
-
-    - name: Setup VSTest
-      uses: darenm/Setup-VSTest@v1.2  
-
-    - name: Setup Nuget
-      uses: NuGet/setup-nuget@v1.2
-      env:
-        ACTIONS_ALLOW_UNSECURE_COMMANDS: true
-
-    - name: Restore NuGet Packages
-      run: nuget restore your-solution-name.sln
-
-    - name: Build Release
-      run: msbuild your-solution-name.sln /p:Configuration=Release
-
-    - name: Test
-      run: vstest.console.exe path-to-test-binary.dll
-
-    - name: Run
-      run: path-to-application-binary.exe
+    test_job:
+        name: Executando o job de teste
+        runs-on: ubuntu-latest
+        steps:
+            -name: Checkout code
+             uses: actions/checkout@v2
+             
+             -name: Executando um comando simples
+              run: echo "Primeiro Action feito no Github"
